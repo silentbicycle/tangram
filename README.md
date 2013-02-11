@@ -97,12 +97,13 @@ and the like, but it's still pretty manual.
    dynamic library to wherever Lua puts its native extensions on your
    system. (To figure this out, you can fire up the Lua REPL and type
    `=package.cpath`. On Unix-like OSs, it's typically something like
-   `/usr/local/lib/lua/5.1/`.)
+   `/usr/local/lib/lua/5.1/`.) You may need to modify the paths in
+   the makefile, if your OS puts Lua's headers/libary somewhere odd.
  * Copy the `tangram` subdirectory into Lua's package path (typically
    "/usr/local/share/lua/5.1/", check `package.path`), so that the
    tangram.* packages can be loaded.
  * Copy the tangram.lua script into your path somewhere.
-
+ * Run `tangram.lua test`.
 
 ## Example usage
 
