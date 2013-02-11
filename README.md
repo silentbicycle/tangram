@@ -215,7 +215,7 @@ Run unit tests. (Requires lunatest.)
    some subtleties. In the mean time, [my StrangeLoop talk][talk]
    includes an attempt to convey my intuitions about how it works.
 
-[talk]: www.infoq.com/presentations/Data-Structures
+[talk]: http://www.infoq.com/presentations/Data-Structures
 
  * Retrieving specific byte-ranges of content. The Jumprope library
    supports it, but it isn't part of the CLI yet.
