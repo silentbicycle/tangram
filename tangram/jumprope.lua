@@ -105,6 +105,7 @@ end
 -- For a limb node string S, return an iterator of (hash, type, length) tuples.
 -- Each line should be have the format of e.g.
 --     "da4b9237bacccdf19c0760cab7aec4a8359010b0 D 1\n".
+-- The hash should be lowercase.
 local function iter_hashes(s)
     assert(s, "no string")
     return s:gmatch("(%x+) ([LD]) (%d+)\n")

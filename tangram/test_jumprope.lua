@@ -1,5 +1,8 @@
 require "random"
 local jumprope = tangram.jumprope
+
+-- This loads either slncrypto (preferred) or luacrypto, which both
+-- install as "crypto".
 require "crypto"
 
 local floor = math.floor
@@ -9,8 +12,11 @@ module(..., package.seeall)
 -- Make a table of counts for each JumpropeSet; weak, so they can be GC'd.
 local counts = setmetatable({}, {__mode="v"})
 
-local function sha1(data)
-   return crypto.digest("sha1", data)
+local sha1                         -- string->sha1 function
+if crypto.sha1 ~= nil then         -- prefer slncrypto
+    sha1 = function(s) return crypto.sha1(s):lower() end
+elseif crypto.digest ~= nil then   -- luacrypto
+    sha1 = function(s) return crypto.digest("sha1", data) end
 end
 
 function in_mem_JumpropeSet(bf)

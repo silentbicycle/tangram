@@ -75,7 +75,7 @@ and the like, but it's still pretty manual.
  * A C compiler
  * libhashchop and its Lua wrapper (http://github.com/silentbicycle/hashchop/)
  * luafilesystem
- * luacrypto (for SHA1 hashing)
+ * slncrypto (for SHA1 hashing)
  * zlib and its lua wrapper
  * SQLite3's lua wrapper
  * lunatest (for testing)
@@ -89,8 +89,8 @@ and the like, but it's still pretty manual.
  * Install [LuaRocks](http://luarocks.org), the de facto standard packaging
    system for Lua. (If you don't want to use LuaRocks, install the other
    Lua dependencies yourself.)
- * Use LuaRocks to install the `crypto`, `zlib`, `lfs`, `sqlite3`,
-   and `lunatest` packages. Type e.g. `luarocks install crypto`.
+ * Use LuaRocks to install the `slncrypto`, `zlib`, `lfs`, `sqlite3`,
+   and `lunatest` packages. Type e.g. `luarocks install slncrypto`.
  * Download [libhashchop](https://github.com/silentbicycle/hashchop),
    build it, and then build and install the lua wrapper with `make lua`
    and `make lua-install`. Or, if you want to do it by hand, copy the

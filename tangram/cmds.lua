@@ -1,6 +1,9 @@
 require "hashchop"
-require "crypto"
 require "lfs"
+
+-- This loads either slncrypto (preferred) or luacrypto, which both
+-- install as "crypto".
+require "crypto"
 
 require "tangram.db"
 local jumprope = require "tangram.jumprope"
@@ -37,8 +40,11 @@ local function mkdir_if_nonexistent(path)
     end
 end
 
-local function sha1(data)
-    return crypto.digest("sha1", data)
+local sha1                         -- string->sha1 function
+if crypto.sha1 ~= nil then         -- prefer slncrypto
+    sha1 = function(s) return crypto.sha1(s):lower() end
+elseif crypto.digest ~= nil then   -- luacrypto
+    sha1 = function(s) return crypto.digest("sha1", data) end
 end
 
 local function db_path(cfg)
