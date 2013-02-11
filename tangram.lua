@@ -32,4 +32,7 @@
 
 require "tangram.init"
 
+-- Use luarocks, if available.
+pcall(require, "luarocks.install")
+
 tangram.main.main(arg)
