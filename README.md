@@ -89,8 +89,9 @@ and the like, but it's still pretty manual.
  * Install [LuaRocks](http://luarocks.org), the de facto standard packaging
    system for Lua. (If you don't want to use LuaRocks, install the other
    Lua dependencies yourself.)
- * Use LuaRocks to install the `slncrypto`, `zlib`, `lfs`, `lsqlite3`,
-   and `lunatest` packages. Type e.g. `luarocks install slncrypto`.
+ * Use LuaRocks to install the `slncrypto`, `zlib`, `luafilesystem`,
+   `lsqlite3`, and `lunatest` packages.
+   Type e.g. `luarocks install slncrypto`.
  * Download [libhashchop](https://github.com/silentbicycle/hashchop),
    build it, and then build and install the lua wrapper with `make lua`
    and `make lua-install`. Or, if you want to do it by hand, copy the
