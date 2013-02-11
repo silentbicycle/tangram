@@ -1,0 +1,5 @@
+require "tangram.defaults"
+require "tangram.cmds"
+require "tangram.db"
+require "tangram.jumprope"
+require "tangram.main"
