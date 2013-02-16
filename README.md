@@ -200,9 +200,15 @@ Search by name or property.
 ## forget: stop tracking a file
 
 Stop tracking a file. To actually remove content from the store, use the
-GC command (not yet implemented).
+GC command.
 
     tangram forget ID
+
+## gc: remove inaccessible content from store
+
+When files are forgotten, their storage is not automatically reclaimed,
+since some of it may be shared by other files. This checks the liveness
+of data chunks in the store and deletes any that are no longer referenced.
 
 ## test: run tests
 
@@ -226,10 +232,6 @@ Run unit tests. (Requires lunatest.)
    (It automatically identifies large subsets of the files that are
    known to be identical and can be skipped.)
    
- * Forgetting a file removes it from the file index, but does not delete
-   data files that are no longer in use. I haven't gotten around to
-   implementing the necessary garbage collection yet.
-
  * There isn't any attempt to take advantage of the Jumprope's
    embarassingly parallelizable retrieval. Scatterbrain uses async IO to
    spread reads over the network, and to maintain an arbitrarily large
