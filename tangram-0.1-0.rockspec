@@ -32,6 +32,7 @@ dependencies = {
     "luafilesystem >= 1.6.2-1",
     "lsqlite3 >= 0.8-1",
     "lunatest >= 0.9.1-1",
+    "lrandom >= 20101118-1",
 }
 build = {
     type = "none",
