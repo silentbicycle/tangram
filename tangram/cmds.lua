@@ -65,6 +65,23 @@ local function init_callbacks(cfg)
         return fullpath, basedir, rest
     end
 
+    local function store_coro()
+        local base = store_path
+        -- Walk every content store and yield every SHA1-hash-named file 
+        for dir in lfs.dir(base) do
+            if dir:match("^%x+") then
+                for tail in lfs.dir(string.format("%s/%s", base, dir)) do
+                    if tail:match("^%x+") then
+                        local h = table.concat{dir, tail}
+                        coroutine.yield(h)
+                    end
+                end
+            end
+        end
+    end
+
+    local iter_store = function() return coroutine.wrap(store_coro) end
+    
     local function get(hash)
         assert(hash, "no hash given")
         local path = hash_fn(hash)
@@ -97,7 +114,13 @@ local function init_callbacks(cfg)
         f:close()
     end
 
-    return {get=get, put=put, exists=exists}
+    local function delete(hash)
+        local path = hash_fn(hash)
+        assert(os.remove(path), "Unable to delete: " .. tostring(path))
+    end
+
+    return {get=get, put=put, exists=exists, delete=delete,
+            iter_store=iter_store}
 end
 
 usage["init"] = {
@@ -383,20 +406,43 @@ end
 
 function cmd_forget(arg, cfg)
     local db = assert(tangram.db.open(db_path(cfg)))
-    local id = assert(tonumber(pop(arg)), "Not a valid file ID")
+    local id = assert(tonumber(pop(arg) or nil), "Not a valid file ID")
     assert(db:rm_file(id))
 end
 
 function cmd_gc(arg, cfg)
-    -- do mark/sweep GC on the file content, delete any node not touched
+    local db = assert(tangram.db.open(db_path(cfg)))
+    local marks = {}
 
-    -- local marks = {}
-    -- for headhash in files:
-    --     fetch all non-chunk nodes & save hashes in marks[]
-    -- for hash in chunks_on_disk:
-    --     if not marks[hash]:
-    --         rm(file(hash))
-    error "TODO"
+    local cbs = init_callbacks(cfg)
+
+    -- Wrap get callback in something that marks live files
+    -- (This does more disk IO than necessary.)
+    local old_get_cb = cbs.get
+    cbs.get = function(hash)
+                  local data = old_get_cb(hash)
+                  if data then marks[hash] = true end
+                  return data
+              end
+    local jrs = assert(jumprope.init{get=cbs.get, put=cbs.put,
+                                     exists=cbs.exists, hash=sha1})
+
+    for row in db:get_files() do
+        local jr = jrs:open(row.hash)
+        for chunk in jr:stream() do
+            -- just discard the data
+        end
+    end
+    
+    -- Iterate over hashes in store, delete any unmarked chunks
+    local count = 0
+    for f in cbs.iter_store() do
+        if not marks[f] then
+            cbs.delete(f)
+            count = count + 1
+        end
+    end
+    printf("Collected %d chunks\n", count)
 end
 
 usage["prop"] = {

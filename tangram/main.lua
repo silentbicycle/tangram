@@ -55,7 +55,7 @@ cmds = {
     ['forget'] = {l="forget a file", f=tangram.cmds.cmd_forget, o="ID"},
     ['prop'] = {l="get/set property", f=tangram.cmds.cmd_prop},
     ['search'] = {l="search", f=tangram.cmds.cmd_search},
-    --['gc'] = {l="collect garbage", f=tangram.cmds.cmd_gc },
+    ['gc'] = {l="collect garbage", f=tangram.cmds.cmd_gc },
 }
 
 function usage()
