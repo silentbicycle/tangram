@@ -1,9 +1,9 @@
 package = "tangram"
-version = "0.1-0"
+version = "0.1-1"
 source = {
     url = "git://github.com/silentbicycle/tangram.git",
-    tag = "v0.1-0",
-    file = "tangram-0.1-0.tar.gz",
+    tag = "v0.1-1",
+    file = "tangram-0.1-1.tar.gz",
     dir = "tangram",
 }
 description = {
